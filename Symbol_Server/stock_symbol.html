@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{symbol}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script data-require="jquery@*" data-semver="2.2.0"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="Bootstrap/stylesheets/homepage.css">
+    <!-- <link rel="icon" type="image/png" href="" -->
+    <style>
+      /* Remove the navbar's default margin-bottom and rounded borders */
+      .navbar {
+        margin-bottom: 0;
+        border-radius: 0;
+      }
+
+      /* Add a gray background color and some padding to the footer */
+      footer {
+        background-color: #f2f2f2;
+        padding: 25px;
+      }
+
+    .carousel-inner img {
+        width: 100%; /* Set width to 100% */
+        margin: auto;
+        min-height:200px;
+    }
+
+    /* Hide the carousel text when the screen is less than 600 pixels wide */
+    @media (max-width: 600px) {
+      .carousel-caption {
+        display: none;
+      }
+    }
+    </style>
+</head>
+<body>
+<script>
+$(document).ready(function() {
+    var price = document.getElementById("price").innerHTML;
+    var last_price = document.getElementById("last_price").innerHTML;
+
+    price = Number(price);
+    last_price = Number(last_price);
+
+    console.log(price)
+    console.log(last_price)
+
+    if (price > last_price) {
+        document.getElementById("arrow").className = "glyphicon glyphicon-chevron-up";
+        document.getElementById("arrow").style.color = "green"
+    }
+    else if (price < last_price) {
+        document.getElementById("arrow").className = "glyphicon glyphicon-chevron-down";
+        document.getElementById("arrow").style.color = "red"
+    }
+    else {
+        document.getElementById("arrow").className = "glyphicon glyphicon-minus";
+    }
+});
+</script>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Logo</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/stocks/">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container text-center">
+  <h3>{name}</h3><br>
+  <div class="row">
+    <div class="col-sm-4">
+      <!-- <img src="http://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"> -->
+        <fieldset><legend>Current Price</legend><h2>${current_price}  &#160;<span class="glyphicon glyphicon-chevron-up" id="arrow"></span></h2>
+        </fieldset>
+      <p><i>NASDAQ</i></p>
+    </div>
+    <div class="col-sm-4">
+      <img src="{image1}" class="img-responsive" style="width:100%" alt="Image">
+      <p><i>Company Logo</i></p>
+    </div>
+    <div class="col-sm-4">
+      <div class="well">
+          <center><h4><u>Dividend & Yield</u></h4></center>
+          <p>Dividend: {dividend}| Yield: {yield}</p>
+          <!-- <fieldset>
+            <legend>Dividend/Yield</legend>
+          </fieldset> -->
+      </div>
+      <div class="well">
+        <center><h4><u>52 Week High/Low</u></h4></center>
+          <p>Year High: {high}| Year Low: {low}</p>
+      </div>
+    </div>
+  </div>
+</div><br>
+
+<div class="well" style="font-family:Arial;">
+    <h3>{symbol}</h3>
+    <h4>{name}</h4>
+    <div class="well" style="font-family:Arial; background:white">
+     <ul>
+        <li id="price">{current_price}</li>
+        <li id="last_price">{last_close}</li>
+        <li>Dividend: {dividend}</li>
+        <li>Yield: {yield}</li>
+        <li>52 Week Low: {low}</li>
+        <li>52 Week High: {high}</li>
+        <li>Mean Recommendation: {rating}</li>
+     </ul>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+    $("button").click(function(){
+        var url = window.location.href;
+        var real = url.split("http://localhost:8080/stocks/");
+        var symbol = real[1];
+        var s_url = 'http://localhost:8080/stocks/' + symbol;
+        jQuery.ajax({type: "POST",
+        //url: s_url,
+        url: 'http://localhost:8080',
+        data: JSON.stringify({'new_site': symbol}),
+        contentType: 'application/json; charset=utf-8'});
+    });
+});
+</script>
+<div>
+  <button type="button" class="btn btn-primary btn-lg btn-block">Update</button><br>
+</div>
+<footer class="container-fluid text-center">
+  <p>Last Updated: <i>{datetime}</i></p>
+</footer>
+
+</body>
+</html>
