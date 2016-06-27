@@ -72,7 +72,7 @@ def stock_home(request):
     return Response(response)
 
 
-#                                       AJAX TESTING
+#                                       AJAX Handler
 def post_handler(request):
     """Accepts JSON object with new site, adds site to list"""
     js = request.json_body
@@ -97,7 +97,8 @@ def post_handler(request):
         pass
 
     return Response("{response: 'OK'}")
-#                                      /AJAX TESTING
+#                                       AJAX Handler
+
 
 if __name__ == '__main__':
     config = Configurator()
