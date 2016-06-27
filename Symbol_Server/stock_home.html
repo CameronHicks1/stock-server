@@ -10,7 +10,7 @@
     <script data-require="jquery@*" data-semver="2.2.0"
             src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="Bootstrap/stylesheets/homepage.css">
+    <!-- <link rel="stylesheet" type="text/css" href="Bootstrap/stylesheets/homepage.css"> -->
     <!-- <script src="site_adder" type="text/javascript"></script> -->
     <style>
       /* Remove the navbar's default margin-bottom and rounded borders */
@@ -75,7 +75,6 @@
     <div class="carousel-inner" role="listbox">
       <div class="item active">
         <img src="http://pshcre.com/wp-content/uploads/2015/06/financial-news.jpg" alt="Image">
-          <!--http://www.offthegridnews.com/wp-content/uploads/2014/08/stock-market-stockrockandroll.jpg-->
         <div class="carousel-caption">
           <h3>Test</h3>
           <p>test verbiage</p>
@@ -101,7 +100,25 @@
       <span class="sr-only">Next</span>
     </a>
 </div>
-
+<script>
+    $(document).ready(function() {
+        $("button.remove").click(function() {
+            var id = $(this).attr('id');
+            var symbol = id.replace("#", "");
+            window.location.href = ("/stocks/")
+            jQuery.ajax({type: "POST",
+                url: 'http://localhost:8080',
+                data: JSON.stringify({'remove_site': symbol}),
+                contentType: 'application/json; charset=utf-8',
+                success: function() {
+                    window.location.reload();
+                },
+            });
+        window.location.reload();
+        return false;
+        });
+    });
+</script>
 <div class="container">
   <h2>Stocks</h2>
   <div class="list-group">
@@ -110,12 +127,16 @@
 </div>
 <script>
 $(document).ready(function(){
-    $("button").click(function(){
+    $("#add_site").click(function(){
         var symbol = document.getElementById('add_site_input').value;
         jQuery.ajax({type: "POST",
         url: 'http://localhost:8080',
         data: JSON.stringify({'new_site': symbol}),
-        contentType: 'application/json; charset=utf-8'});
+        contentType: 'application/json; charset=utf-8',
+        success: function() {
+            window.location.reload();
+            },
+        });
     });
 });
 </script>
