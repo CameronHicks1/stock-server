@@ -47,7 +47,32 @@ def add_site(site):
     update_file.close()
 
 
-def remove_site():
+def remove_site(site):
     """Opens 'sites.json' removes site"""
-    pass
+    file = open('sites', 'r+')
+    sites = file.read()
 
+    site = str(site.upper())
+    sites_list = []
+
+    converted  = json.loads(sites)
+    # Appends sites from JSON object 'sites' to sites_list for python usable object(Array)
+    for site_x in converted['sites']:
+        sites_list.append(site_x)
+
+    # Removes site from sites list
+    if site in sites_list:
+        sites_list.remove(site)
+    else:
+        return
+
+    # JSON serializes new list and saves to 'sites.json'
+    #   -closes file then reopens in 'w' mode to erase original content
+    json_text = '{"sites": ' + str(sites_list) + '}'
+    new_json = json_text.replace("'", "\"")  # json.dumps(json_text)
+    file.close()
+
+    update_file = open('sites', 'w')
+    update_file.write(new_json)
+
+    update_file.close()
