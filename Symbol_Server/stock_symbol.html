@@ -10,7 +10,7 @@
     <script data-require="jquery@*" data-semver="2.2.0"
             src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="Bootstrap/stylesheets/homepage.css">
+    <!-- <link rel="stylesheet" type="text/css" href="Bootstrap/stylesheets/homepage.css"> -->
     <!-- <link rel="icon" type="image/png" href="" -->
     <style>
       /* Remove the navbar's default margin-bottom and rounded borders */
@@ -48,9 +48,6 @@ $(document).ready(function() {
     price = Number(price);
     last_price = Number(last_price);
 
-    console.log(price)
-    console.log(last_price)
-
     if (price > last_price) {
         document.getElementById("arrow").className = "glyphicon glyphicon-chevron-up";
         document.getElementById("arrow").style.color = "green"
@@ -61,8 +58,14 @@ $(document).ready(function() {
     }
     else {
         document.getElementById("arrow").className = "glyphicon glyphicon-minus";
+        console.log('test1');
     }
 });
+
+function printMe() {
+    window.print();
+    return false;
+};
 </script>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -82,6 +85,10 @@ $(document).ready(function() {
         <li><a href="contact.html">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li><button type="button" class="btn btn-default btn-sm"  onclick="printMe();"
+                    style="vertical-align: middle; margin-top: .8em;">
+            <span class="glyphicon glyphicon-print"></span> Print
+          </button></li>
         <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       </ul>
     </div>
@@ -121,19 +128,40 @@ $(document).ready(function() {
     <h4>{name}</h4>
     <div class="well" style="font-family:Arial; background:white">
      <ul>
-        <li id="price">{current_price}</li>
-        <li id="last_price">{last_close}</li>
+        <li id="price" style="display:none;">{current_price}</li>
+        <li id="last_price" style="display:none;">{last_close}</li>
+        <li>Current Price: {current_price}</li>
+        <li>Last Close: {last_close}</li>
         <li>Dividend: {dividend}</li>
         <li>Yield: {yield}</li>
-        <li>52 Week Low: {low}</li>
-        <li>52 Week High: {high}</li>
+        <li>52 Week low: {low}</li>
+        <li>52 Week High {high}</li>
         <li>Mean Recommendation: {rating}</li>
      </ul>
     </div>
 </div>
+<style>
+.glyphicon-refresh-animate {
+-animation: spin .7s infinite linear;
+-webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+</style>
 <script>
 $(document).ready(function(){
-    $("button").click(function(){
+    $("button.btn-primary").click(function(){
+        var loader = document.getElementById("updating");
+        loader.className = "glyphicon glyphicon-refresh glyphicon-refresh-animate";
+
         var url = window.location.href;
         var real = url.split("http://localhost:8080/stocks/");
         var symbol = real[1];
@@ -141,13 +169,16 @@ $(document).ready(function(){
         jQuery.ajax({type: "POST",
         //url: s_url,
         url: 'http://localhost:8080',
+        success: function() {
+            window.location.reload();
+        },
         data: JSON.stringify({'new_site': symbol}),
-        contentType: 'application/json; charset=utf-8'});
+        contentType: 'application/json; charset=utf-8'})
     });
 });
 </script>
-<div>
-  <button type="button" class="btn btn-primary btn-lg btn-block">Update</button><br>
+<div id="updater">
+  <button type="button" class="btn btn-primary btn-lg btn-block" id="load">Update <span id="updating"></span></button><br>
 </div>
 <footer class="container-fluid text-center">
   <p>Last Updated: <i>{datetime}</i></p>
