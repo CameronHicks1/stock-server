@@ -32,8 +32,10 @@ def add_site(site):
         sites_list.append(site_x)
 
     # Adds new site to sites list
-    sites_list.append(site)
-    # print(sites_list)
+    if site in sites_list:
+        return
+    else:
+        sites_list.append(site)
 
     # JSON serializes new list and saves to 'sites.json'
     #   -closes file then reopens in 'w' mode to erase original content
