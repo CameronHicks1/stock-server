@@ -72,12 +72,24 @@ def post_handler(request):
     """Accepts JSON object with new site, adds site to list"""
     js = request.json_body
     # Filter JSON
-    js_object = str(js).replace("{'new_site': '", "")
-    symbol = js_object.replace("'}", "")
+    if "remove_site" in str(js):
+        js_object = str(js).replace("{'remove_site': '", "")
+        symbol = js_object.replace("'}", "")
 
-    # Add stock site to json list
-    add_site(symbol)
-    write_new_file(symbol)
+        # Removes stock site from json list
+        remove_site(symbol)
+        return Response("{response: 'OK'}")
+
+    elif "new_site" in str(js):
+        js_object = str(js).replace("{'new_site': '", "")
+        symbol = js_object.replace("'}", "")
+
+        # Add stock site to json list
+        add_site(symbol)
+        write_new_file(symbol)
+
+    else:
+        pass
 
     return Response("{response: 'OK'}")
 #                                      /AJAX TESTING
