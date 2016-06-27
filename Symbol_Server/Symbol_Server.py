@@ -1,7 +1,7 @@
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.response import Response
-from json_handler import read_json, add_site
+from json_handler import read_json, add_site, remove_site
 from image_finder import address_image
 from updater import write_new_file
 
