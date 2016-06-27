@@ -58,7 +58,12 @@ def stock_home(request):
 
     for symbol in symbols:
         # Creates element for each stock
-        element = ('<div class="list-group">' + '<a href="#" class="list-group-item">' + symbol + '</a>')
+        element = ('<div class="list-group">' + '<a href="#" class="list-group-item" id="' + str(symbol) + '">' +
+                   symbol + '<span class="badge" style="background-color: white;  vertical-align: middle;' +
+                   'margin-top: -0.5em;">' +
+                   '<button class="remove btn btn-danger" id="' + str(symbol) + '" style="padding: ' +
+                   '2px;">remove</button></span>' +
+                   '</a>' + '\n')
         #   Adds link for each element
         link = ('/stocks/' + symbol)
         element = element.replace('#', link)
